@@ -7,4 +7,4 @@ Main goal of this repo is to share with gamedev community ideas, code samples, s
 
 Please bear in mind that I can't share publicly many of the assets that I used for the game as Unity Asset Store licence forbids me to it. I will however put list of all the assets I used in my game, so you can use them as you need to. 
 
-Game was made using Unity version 2020.1.6f1. All assets are licenced under BSD 3, with the exception of those listed in credits file. If I forgot, missinterpreted or missused any asset that is the part of the project, please let me know, either via emailing me directly, or using issues tab of Github 
+Game was made using Unity version 2020.1.6f1. All files in this repo are licenced under BSD 3, with the exception of those listed in credits file. If I forgot, missinterpreted or missused any asset that is the part of the project, please let me know, either via emailing me directly, or using issues tab of Github 
