@@ -3,8 +3,6 @@ Credits:
 Programming, UI, 3D Models, Visuals, Designing: Konrad Potempski . Mail: konradpotempski@gmail.com
 
 Visuals:
-Fantasy Wooden GUI : Free Version by Black Hammer, from Unity Asset Store
-3D Character Dummy by Kevin Iglesias, from Unity Asset Store
 "Seamless Beach Sand" texture, created by https://opengameart.org/users/n4 , used under CC0 1.0
 "Seamless Grass Textures (20 pack)", created by https://opengameart.org/users/athile , used under CC0 1.0
 "Medieval Wood" Texture, created by https://texturehaven.com/textures/?a=Rob%20Tuytel , used under CC0 1.0
