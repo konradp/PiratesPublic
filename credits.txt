@@ -1,0 +1,32 @@
+Credits:
+
+Programming, UI, 3D Models, Visuals, Designing: Konrad Potempski . Mail: konradpotempski@gmail.com
+
+Visuals:
+Fantasy Wooden GUI : Free Version by Black Hammer, from Unity Asset Store
+3D Character Dummy by Kevin Iglesias, from Unity Asset Store
+"Seamless Beach Sand" texture, created by https://opengameart.org/users/n4 , used under CC0 1.0
+"Seamless Grass Textures (20 pack)", created by https://opengameart.org/users/athile , used under CC0 1.0
+"Medieval Wood" Texture, created by https://texturehaven.com/textures/?a=Rob%20Tuytel , used under CC0 1.0
+"plywood" Texture,  created by https://texturehaven.com/textures/?a=Rob%20Tuytel , used under CC0 1.0
+"Seamless Fabric" Textire, created by https://opengameart.org/users/n4 , used under CC0 1.0
+"Pirate Flag", created by https://en.wikipedia.org/wiki/File:Pirate_Flag.svg , used under the Creative Commons Attribution-Share Alike 3.0 Unported license
+"Pirate cannon icon", created by http://delapouite.com/, used under CC BY 3.0
+"Fabric - Fake Leather", created by https://opengameart.org/users/keith333 , used under CC BY 3.0
+"Seamless Pattern ~ Fabric, Textile", created by https://opengameart.org/users/n4 , used under CC0
+"Metal_001 *Seamless*", created by https://opengameart.org/users/pagdev , used under CC BY 3.0
+"Planks Brown", created by https://texturehaven.com/textures/?a=Rob%20Tuytel , used under CC0 1.0
+Controller Icons, created by nick@thoseawesomeguys.com , used under CC0 1.0
+
+Fonts:
+El Messiri, used under SIL Open Font License. https://fontlibrary.org/pl/font/el-messiri
+SpotCookie-Regular, used under SIL Open Font License. https://fontlibrary.org/pl/font/spotcookie-regular
+
+Music and Sound:
+Gun Hit Sound "gun shot5" - Made by https://freesound.org/people/coolguy244e/ used under CC0 1.0
+https://www.free-stock-music.com/alexander-nakarada-chase.html
+https://www.free-stock-music.com/alexander-nakarada-tranquil-fields-eastern.html
+https://www.free-stock-music.com/alexander-nakarada-discovery.html
+"industrial blast", created by https://freesound.org/people/thanvannispen/ , used under CC BY 3.0
+"Cannon1", created by https://freesound.org/people/Isaac200000/ , used under CC0 1.0
+"SPLASH", created by https://freesound.org/people/petenice/ , used under CC0 1.0
