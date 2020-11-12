@@ -1,0 +1,143 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5949759635845472024
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5949759635845472022}
+  - component: {fileID: 5949759635845472025}
+  - component: {fileID: 5949759635845472023}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5949759635845472022
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949759635845472024}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5949759635845472025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949759635845472024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edbee54ecd2f9244aa4e65bc40e8303f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: chase-bgm
+    clip: {fileID: 8300000, guid: d98d33b0eb3b63d48b7bf743e8d6bf70, type: 3}
+    source: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 0
+    soundDistance: 200
+    randomVolume: 0
+    randomPitch: 0
+    isRandom: 0
+    loop: 0
+  - name: discovery-bgm
+    clip: {fileID: 8300000, guid: b4898144a678d674aa037219e6159e5f, type: 3}
+    source: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 0
+    soundDistance: 200
+    randomVolume: 0
+    randomPitch: 0
+    isRandom: 0
+    loop: 0
+  - name: tranquil-bgm
+    clip: {fileID: 8300000, guid: 36ef62c0bc2ea5c4cae78fd0e77b8127, type: 3}
+    source: {fileID: 0}
+    volume: 0.3
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 0
+    soundDistance: 200
+    randomVolume: 0
+    randomPitch: 0
+    isRandom: 0
+    loop: 0
+  - name: shoot
+    clip: {fileID: 8300000, guid: 6578e2f11693d9444babd84a94d4e86f, type: 3}
+    source: {fileID: 0}
+    volume: 0.6
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 1
+    soundDistance: 100
+    randomVolume: 0.032
+    randomPitch: 0.017
+    isRandom: 1
+    loop: 0
+  - name: shoot2
+    clip: {fileID: 8300000, guid: 16576aaa9d78bca45a46f510f5dcb0cc, type: 3}
+    source: {fileID: 0}
+    volume: 0.6
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 1
+    soundDistance: 200
+    randomVolume: 0.187
+    randomPitch: 0.074
+    isRandom: 0
+    loop: 0
+  - name: shoot3
+    clip: {fileID: 8300000, guid: 0fec6e550ba46434d864a85c7e4b4187, type: 3}
+    source: {fileID: 0}
+    volume: 0.8
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 1
+    soundDistance: 200
+    randomVolume: 0.029
+    randomPitch: 0.013
+    isRandom: 1
+    loop: 0
+  - name: splash
+    clip: {fileID: 8300000, guid: 0e92821eb0a61874dbcbb32faabe343f, type: 3}
+    source: {fileID: 0}
+    volume: 0.7
+    pitch: 1
+    originalVolume: 1
+    spatialBlend: 1
+    soundDistance: 100
+    randomVolume: 0.02
+    randomPitch: 0.013
+    isRandom: 1
+    loop: 0
+--- !u!114 &5949759635845472023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5949759635845472024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14af43ef68dabd144bf606341fc16511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
