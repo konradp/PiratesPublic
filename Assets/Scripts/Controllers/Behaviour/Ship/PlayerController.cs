@@ -43,22 +43,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform[] smokePartTrans;
     List<GameObject> cachedSmokeParticles;
 
-    //player control vals
-    /// <summary>
-    /// Register Player Input beforehand, could be usefull later
-    /// </summary>
-    float playerSteeringAxis, playerAccelAxis, playerBrakeAxis, playerCameraYAxis, playerCameraXAxis;
-    ButtonControl playerAttackButton, playerWeaponChangeMinus, playerWeaponChangePlus,
-    playerLeftAtackButton, playerRightAttackButton;
-
 
     Weapon curWeapon;
-    public Weapon GetCurWeapon { get { return curWeapon; } }
+    public Weapon GetCurWeapon { get => curWeapon;  }
 
     //player behaviour helper vals
     public bool isImmobilized = false;
     float desMaxSpeed, desMaxTorque;
     float curSpeed = 0;
+    public float GetCurSpeed { get => curSpeed; }
     bool isStill = false;
     float turningSpeedHelper = 150f;
     bool turningWhileStill = false;
@@ -94,9 +87,6 @@ public class PlayerController : MonoBehaviour
         healthCont.SetUpHealthController(150, false, playerIndex, null);
         playAtackCont.SetUpAttackController(forwardCanonPiv, leftCanonsPiv, rightCanonsPiv, startingAmmo, true);
 
-        //set up controls
-        AssignControlsOnce();
-
         //set local variables
         defRot = camFollow.GetHeight;
         rb.centerOfMass = centreOfMass.localPosition;
@@ -107,39 +97,12 @@ public class PlayerController : MonoBehaviour
         desMaxSpeed = maxSpeed;
         desMaxTorque = torque;
     }
-    void AssignControlsOnce()
-    {
-        playerAttackButton = curPad.aButton;
-        playerWeaponChangePlus = curPad.bButton;
-        playerLeftAtackButton = curPad.leftShoulder;
-        playerRightAttackButton = curPad.rightShoulder;
-    }
     private void Update()
     {
-        AssignControlsOnUpdate();
-        CameraRotation();
+        //CameraRotation();
         curSpeed = rb.velocity.magnitude * 3.6f;
         isStill = (curSpeed < stillMaxSpeed) ? true : false;
         DebugAnim();
-    }
-    void AssignControlsOnUpdate()
-    {
-        playerSteeringAxis = curPad.leftStick.x.ReadValue();
-        playerAccelAxis = curPad.rightTrigger.ReadValue();
-        playerBrakeAxis = curPad.leftTrigger.ReadValue();
-        playerCameraXAxis = curPad.rightStick.x.ReadValue();
-        playerCameraYAxis = curPad.rightStick.y.ReadValue();
-    }
-    void CameraRotation()
-    {
-        //counter intuitive, because we're assigning Y value of campiv rotation, and we're moving right analog on x axis
-        rotAngleY = playerCameraXAxis * 90f;
-        rotAngleX += playerCameraYAxis * TimeControl.deltaTime * rotSpeed;
-        rotAngleX = Mathf.Clamp(rotAngleX, camHeightConstraints.x, camHeightConstraints.y);
-        if (playerCameraYAxis == 0f)
-            rotAngleX = defRot;
-        camFollow.SetHeight = rotAngleX;
-        cameraPiv.localEulerAngles = new Vector3(0, -rotAngleY, 0);
     }
     void DebugAnim()
     {
@@ -162,7 +125,6 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UserInput();
         //check if we're not exceeding speed. if so, cut the power
         if (curSpeed > maxSpeed)
         {
@@ -172,32 +134,30 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    void UserInput()
+    public void CameraRotation(float _camXaxis, float _camYaxis)
     {
-        //Brakes
-        PlayerBrake();
-        //Steering
-        PlayerSteering();
-        //Acceleration
-        PlayerAccel();
-        //Attack
-        PlayerAttack();
-        //change weapon
-        PlayerChangeWeapon();
+        //counter intuitive, because we're assigning Y value of campiv rotation, and we're moving right analog on x axis
+        rotAngleY = _camXaxis * 90f;
+        rotAngleX += _camYaxis * TimeControl.deltaTime * rotSpeed;
+        rotAngleX = Mathf.Clamp(rotAngleX, camHeightConstraints.x, camHeightConstraints.y);
+        if (_camYaxis == 0f)
+            rotAngleX = defRot;
+        camFollow.SetHeight = rotAngleX;
+        cameraPiv.localEulerAngles = new Vector3(0, -rotAngleY, 0);
     }
-    void PlayerBrake()
+    public void PlayerBrake(float _brakeAxis, float _steerAxis)
     {
-        if (playerBrakeAxis > 0)
+        if (_brakeAxis > 0)
         {
             for (int i = 0; i < wCols.Length; i++)
             {
-                if (isStill && playerSteeringAxis != 0)
+                if (isStill && _steerAxis != 0)
                 {
                     wCols[i].brakeTorque = 0f;
                 }
                 else
                 {
-                    wCols[i].brakeTorque = brakeTorque * playerBrakeAxis;
+                    wCols[i].brakeTorque = brakeTorque * _brakeAxis;
                 }
             }
         }
@@ -210,9 +170,9 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    void PlayerSteering()
+    public void PlayerSteering(float _steerAxis)
     {
-        if (playerSteeringAxis != 0)
+        if (_steerAxis != 0)
         {
             //speed ajdust helper
             float speedHelper = speedToSteerAdjust.Evaluate(Mathf.Clamp(Mathf.Abs(curSpeed / maxSpeed), 0.0f, 1.0f));
@@ -224,14 +184,14 @@ public class PlayerController : MonoBehaviour
                 {
                     turningWhileStill = true;
                     wCols[i].motorTorque = turningSpeedHelper;
-                    float tmpAngle = maxSteerAngle * (playerSteeringAxis * speedHelper) * stillRotHelper;
+                    float tmpAngle = maxSteerAngle * (_steerAxis * speedHelper) * stillRotHelper;
                     wCols[i].steerAngle = tmpAngle;
                 }
                 else
                 {
                     turningWhileStill = false;
                     //turning with back wheels to give more authenticy, but allow front to help a bit
-                    wCols[i].steerAngle = maxSteerAngle / 2 * playerSteeringAxis * speedHelper;
+                    wCols[i].steerAngle = maxSteerAngle / 2 * _steerAxis * speedHelper;
                 }
             }
             //back wheels
@@ -241,13 +201,13 @@ public class PlayerController : MonoBehaviour
                 {
                     turningWhileStill = true;
                     wCols[i].motorTorque = turningSpeedHelper;
-                    float tmpAngle = maxSteerAngle * (playerSteeringAxis * speedHelper) * stillRotHelper;
+                    float tmpAngle = maxSteerAngle * (_steerAxis * speedHelper) * stillRotHelper;
                     wCols[i].steerAngle = -tmpAngle;
                 }
                 else
                 {
                     turningWhileStill = false;
-                    wCols[i].steerAngle = maxSteerAngle * -playerSteeringAxis * speedHelper;
+                    wCols[i].steerAngle = maxSteerAngle * -_steerAxis * speedHelper;
                 }
             }
         }
@@ -260,13 +220,13 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    void PlayerAccel()
+    public void PlayerAccel(float _accelAxis)
     {
-        if (playerAccelAxis > 0)
+        if (_accelAxis > 0)
         {
             for (int i = 0; i < wCols.Length; i++)
             {
-                wCols[i].motorTorque = torque * playerAccelAxis;
+                wCols[i].motorTorque = torque * _accelAxis;
             }
         }
         else
@@ -281,10 +241,10 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    void PlayerAttack()
+    public void PlayerAttack(bool _attackFront, bool _attackLeft, bool _attackRight)
     {
         //attack up front
-        if (playerAttackButton.isPressed)
+        if (_attackFront)
         {
             if (playAtackCont.CanShoot() && !isImmobilized)
             {
@@ -295,7 +255,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //attack to left side
-        if (playerLeftAtackButton.isPressed)
+        if (_attackLeft)
         {
             if (playAtackCont.CanShoot() && !isImmobilized)
             {
@@ -306,7 +266,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //attack to right side
-        if (playerRightAttackButton.isPressed)
+        if (_attackRight)
         {
             if (playAtackCont.CanShoot() && !isImmobilized)
             {
@@ -317,9 +277,9 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    void PlayerChangeWeapon()
+    public void PlayerChangeWeapon(bool _weaponChange)
     {
-        if (playerWeaponChangePlus.wasPressedThisFrame)
+        if (_weaponChange)
         {
             curWeapon++;
             if ((int)curWeapon >= Enum.GetValues(typeof(Weapon)).Length)

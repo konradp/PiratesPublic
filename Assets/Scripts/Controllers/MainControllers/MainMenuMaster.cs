@@ -9,7 +9,6 @@ public class MainMenuMaster : MonoBehaviour
     void Start()
     {
         ActivateCanvas(0); //failsafe if I forget to activate main menu
-        PlaylistManager.instance.ChangePlaybackStatus(false);
     }
     public void StartGame()
     {

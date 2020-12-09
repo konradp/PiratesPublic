@@ -13,10 +13,10 @@ public class UIMaster : MonoBehaviour
     //ref to our player
     [SerializeField] PlayerController curPlayer;
     //reference to text objs in canvas
-    [SerializeField] TextMeshProUGUI weaponText, FPStext, PPSText, ammoText, curEnemyText;
+    [SerializeField] TextMeshProUGUI weaponText, FPStext, PPSText, ammoText, curEnemyText, playerSpeedText;
     //ref to menus
     [SerializeField] GameObject PauseMenuParent, winMenu, loseMenu;
-    //ref to buttonos
+    //ref to buttons
     [SerializeField] Button pauseSelectBut, winSelectBut, loseSelectBut;
     //ref to main canvas
     [SerializeField] GameObject mainCanvas;
@@ -80,6 +80,7 @@ public class UIMaster : MonoBehaviour
             PPSText.SetText(string.Format("{0:0.0} ms ({1:0.} pps)", ppsmsec, pps));
             fpstimer = 0;
         }
+        playerSpeedText.SetText(string.Format("PlayerSpeed : {0}",curPlayer.GetCurSpeed.ToString("n2")));
     }
     private void LateUpdate()
     {

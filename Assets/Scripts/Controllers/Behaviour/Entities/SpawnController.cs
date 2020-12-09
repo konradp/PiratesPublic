@@ -11,4 +11,5 @@ public class SpawnController : MonoBehaviour
     /// </summary>
     public int shipIndex;
     public bool isPacifist;
+    public Transform failSafeTransform;
 }

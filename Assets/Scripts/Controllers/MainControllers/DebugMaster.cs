@@ -12,9 +12,11 @@ public class DebugMaster : MonoBehaviour
     private float enemyCheckTimer;
     private int bonusEnemyCount;
     private float enemyCheckTimerMax = 0.6f;
-    [SerializeField] GameObject player, bonusWinCanv;
+    [SerializeField] GameObject player, player2, bonusWinCanv;
     bool alreadySetBonusCond = false;
     [SerializeField] bool isBonusEnabled;
+    public GameObject GetPlayer { get => player; }
+    public GameObject GetPlayer2 { get => player2; }
 
     private void Start()
     {

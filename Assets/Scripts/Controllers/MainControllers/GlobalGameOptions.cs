@@ -1,60 +1,75 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEditor;
+using System.Collections;
 
 public class GlobalGameOptions : MonoBehaviour
 {
-    int fullScreenMode;
     string currentScreenmodeText;
-    public TextMeshProUGUI FSinfoText, FSmodeText, VsyncText, fpsText, resolutionText, muteText;
-    int curVsync = 0;
-    int targetFPS;
-    Resolution[] resolutions;
-    int curRes = 1;
-    bool isBGMMuted;
+    public TextMeshProUGUI FSinfoText, FSmodeText, VsyncText, fpsText, resolutionText, muteText, inputTypeText;
+
+    Options loadedOptions;
+
+    public static GlobalGameOptions instance;
+    private void Awake()
+    {
+        if (instance != null)
+        {
+            if (instance != this)
+            {
+                //Destroy(this.gameObject);
+                this.enabled = false;
+            }
+        }
+        else
+        {
+            instance = this;
+        }
+    }
     private void Start()
     {
-        DebugSetupResolutions();
-        fullScreenMode = (int)Screen.fullScreenMode;
+
+    }
+
+    public void SetGameOptions(Options _opts)
+    {
+        loadedOptions = _opts;
+        SetOptionValues();
+        SetTextOnceOptionsLoaded();
+
+    }
+    void SetOptionValues()
+    {
+        Application.targetFrameRate = loadedOptions.targetFPS;
+        Screen.fullScreen = loadedOptions.fullScreen;
+        Screen.fullScreenMode = loadedOptions.fullScreenMode;
+        Screen.SetResolution(loadedOptions.resolutions[loadedOptions.curResolution].width,
+            loadedOptions.resolutions[loadedOptions.curResolution].height,
+            Screen.fullScreenMode, loadedOptions.resolutions[loadedOptions.curResolution].refreshRate);
+        
+        QualitySettings.vSyncCount = loadedOptions.vSyncCount;
+        InputHelper.instance.ChangeInputTypeForPlayer(0,loadedOptions.inputType);
+        PlaylistManager.instance.ChangePlaybackStatus(loadedOptions.bgmMute);
+
+    }
+    void SetTextOnceOptionsLoaded()
+    {
         FSinfoText.text = "Current FS mode: " + Screen.fullScreen.ToString();
         FSmodeText.text = "Current mode: " + Screen.fullScreenMode.ToString();
-        curVsync = QualitySettings.vSyncCount;
-        targetFPS = Application.targetFrameRate;
-        isBGMMuted=false;
         ChangeMuteText();
         ChangeVsyncText();
         ChangeResolutionText();
         ChangeFPSText();
-
-    }
-    void DebugSetupResolutions()
-    {
-        resolutions = new Resolution[2];
-        resolutions[0].height = 720;
-        resolutions[0].width = 1280;
-        resolutions[0].refreshRate = 60;
-        resolutions[1].height = 1080;
-        resolutions[1].width = 1920;
-        resolutions[1].refreshRate = 60;
-        switch (Screen.currentResolution.height)
-        {
-            case(720):
-                curRes = 0;
-                break;
-            case(1080):
-                curRes = 1;
-                break;
-            default:
-                break;
-        }
+        ChangeControlText();
     }
     void ChangeFPSText()
     {
-        fpsText.text = "Target FPS: " + targetFPS;
+        fpsText.text = "Target FPS: " + loadedOptions.GetTargetFPS;
     }
     void ChangeVsyncText()
     {
-        switch (curVsync)
+        switch (loadedOptions.GetVsyncCount)
         {
             case(0):
                 VsyncText.text = "Vsync: Off";
@@ -68,11 +83,12 @@ public class GlobalGameOptions : MonoBehaviour
     }
     void ChangeResolutionText()
     {
-        resolutionText.text = "Resolution: " + resolutions[curRes].width + "/"+ resolutions[curRes].height;
+        resolutionText.text = "Resolution: " + loadedOptions.resolutions[loadedOptions.GetCurResolution].width + "/"
+            + loadedOptions.resolutions[loadedOptions.GetCurResolution].height;
     }
     void ChangeMuteText()
     {
-        if (isBGMMuted)
+        if (loadedOptions.GetBGMMute)
         {
             muteText.SetText("BGM: OFF");
         }
@@ -81,45 +97,61 @@ public class GlobalGameOptions : MonoBehaviour
             muteText.SetText("BGM: ON");
         }
     }
+    void ChangeControlText()
+    {
+        switch (loadedOptions.GetInputType)
+        {
+            case InputType.KEYBOARD:
+                inputTypeText.SetText("Input: Keyboard");
+                break;
+            case InputType.GAMEPAD:
+                inputTypeText.SetText("Input: Xbox Gamepad");
+                break;
+            default:
+                break;
+        }
+    }
     void ChangeFPS()
     {
         int fpsMin = 30;
         int fpsMax = 120;
-        targetFPS+=15;
-        if(targetFPS>fpsMax || targetFPS <fpsMin)
-            targetFPS = fpsMin;
-        Application.targetFrameRate = targetFPS;
+        loadedOptions.targetFPS+=15;
+        if(loadedOptions.targetFPS > fpsMax || loadedOptions.targetFPS < fpsMin)
+            loadedOptions.targetFPS = fpsMin;
+        Application.targetFrameRate = loadedOptions.targetFPS;
 
     }
     void ChangeResolution()
     {
-        curRes+=1;
-        if(curRes>1)
-            curRes=0;
-        Screen.SetResolution(resolutions[curRes].width,resolutions[curRes].height,
-            Screen.fullScreenMode,resolutions[curRes].refreshRate);
+        loadedOptions.curResolution+=1;
+        if(loadedOptions.curResolution >= loadedOptions.GetResolutions.Length)
+            loadedOptions.curResolution = 0;
+        Screen.SetResolution(loadedOptions.resolutions[loadedOptions.curResolution].width, 
+            loadedOptions.resolutions[loadedOptions.curResolution].height,
+            Screen.fullScreenMode, loadedOptions.resolutions[loadedOptions.curResolution].refreshRate);
         
     }
     public void ToggleFullScreen()
     {
         Screen.fullScreen = !Screen.fullScreen;
+        loadedOptions.fullScreen = Screen.fullScreen;
         FSinfoText.text = "Current FS mode: " + Screen.fullScreen.ToString();
     }
     public void ToggleFullScreenMode()
     {
-        fullScreenMode++;
-        if (fullScreenMode > Enum.GetNames(typeof(FullScreenMode)).Length)
-            fullScreenMode = 0;
-        Screen.fullScreenMode = (FullScreenMode)fullScreenMode;
+        loadedOptions.fullScreenMode++;
+        if ((int)loadedOptions.fullScreenMode >= Enum.GetNames(typeof(FullScreenMode)).Length)
+            loadedOptions.fullScreenMode = 0;
+        Screen.fullScreenMode = loadedOptions.fullScreenMode;
         currentScreenmodeText = Screen.fullScreenMode.ToString();
         FSmodeText.text = "Current mode: " + currentScreenmodeText;
     }
     public void ToggleVsync()
     {
-        curVsync+=1;
-        if(curVsync>1)
-            curVsync=0;
-        QualitySettings.vSyncCount = curVsync;
+        loadedOptions.vSyncCount+=1;
+        if(loadedOptions.vSyncCount > 1)
+            loadedOptions.vSyncCount = 0;
+        QualitySettings.vSyncCount = loadedOptions.vSyncCount;
         ChangeVsyncText();
     }
     public void ChangeTargetFPSBut()
@@ -134,8 +166,37 @@ public class GlobalGameOptions : MonoBehaviour
     }
     public void ChangeMute()
     {
-        isBGMMuted = !isBGMMuted;
-        PlaylistManager.instance.ChangePlaybackStatus(isBGMMuted);
+        loadedOptions.bgmMute = !loadedOptions.bgmMute;
+        PlaylistManager.instance.ChangePlaybackStatus(loadedOptions.bgmMute);
         ChangeMuteText();
     }
+    public void ChangeInputType()
+    {
+        InputHelper.instance.ChangeInputTypeForPlayer(0);
+        loadedOptions.inputType = InputHelper.instance.PlayerInputMethods[0];
+        ChangeControlText();
+    }
+    public void SaveOptions()
+    {
+        XMLManipulator.SaveOptions(loadedOptions);
+    }
 }
+#if UNITY_EDITOR
+[CustomEditor(typeof(GlobalGameOptions))]
+public class GlobalGameOptionsEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        DrawDefaultInspector();
+        GlobalGameOptions options = (GlobalGameOptions)target;
+        if (GUILayout.Button("Toggle FPS"))
+        {
+            options.ChangeTargetFPSBut();
+        }
+        if (GUILayout.Button("Toggle FullScreenMode"))
+        {
+            options.ToggleFullScreenMode();
+        }
+    }
+}
+#endif

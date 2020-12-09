@@ -33,8 +33,6 @@ public class GlobalInput : MonoBehaviour
     private void Start()
     {
         curPad = Gamepad.current;
-        if (curPad == null)
-            Debug.LogWarning("No gamepads detected");
         isFreeCam = false;
         cameraFreeFlyController = Camera.main.GetComponent<CameraFreeFlyController>();
         cameraSmoothFollow = Camera.main.GetComponent<CameraSmoothFollow>();
@@ -42,9 +40,19 @@ public class GlobalInput : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (curPad.startButton.wasPressedThisFrame)
+        if (curPad != null)
         {
-            SetPauseStatus(!isPaused);
+            if (curPad.startButton.wasPressedThisFrame || Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                SetPauseStatus(!isPaused);
+            }
+        }
+        else
+        {
+            if (Keyboard.current.escapeKey.wasPressedThisFrame)
+            {
+                SetPauseStatus(!isPaused);
+            }
         }
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {

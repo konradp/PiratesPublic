@@ -82,7 +82,7 @@ public class GameMaster : MonoBehaviour
             AIPlayers[i].name = IDs[i].ToString();
             AIPlayers[i].GetComponent<AIPlayerController>().AIPlayerSetup(AICheckPointTrans,IDs[i],
                 AreaXConstraints[spawnConts[i].spawnIndex],AreaZConstraints[spawnConts[i].spawnIndex],
-                spawnConts[i].AIGroup, spawnConts[i].shipIndex, spawnConts[i].isPacifist);
+                spawnConts[i].AIGroup, spawnConts[i].shipIndex, spawnConts[i].isPacifist, spawnConts[i].failSafeTransform);
             AIs[i] = new AIInfo(IDs[i], spawnConts[i].AIGroup, 
                 spawnConts[i].isPacifist ? AIShipStatus.PACIFIST : AIShipStatus.WORKING);
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class AIPlayerController : MonoBehaviour
 {
@@ -56,6 +57,7 @@ public class AIPlayerController : MonoBehaviour
     int allowedAreaMask;
     bool canMoveForward = true;
     bool isImmobilized;
+    Transform failSafeTransform;
 
     //controllers refs
     HealthController healthCont;
@@ -74,8 +76,9 @@ public class AIPlayerController : MonoBehaviour
     /// <param name="_aiGroup">AI group. default 0. Various group can fight with each other</param>
     /// <param name="_shipTemplate">Ship template index.</param>
     /// <param name="_isPacifist">Is ship pacifist?</param>
+    /// <param name="_failSafeTrans">Transform of the Failsafe Position</param>
     public void AIPlayerSetup(Transform _aiPathTrans, int _id, Vector2 _areaXConst,
-    Vector2 _areaZConst, int _aiGroup, int _shipTemplate, bool _isPacifist)
+    Vector2 _areaZConst, int _aiGroup, int _shipTemplate, bool _isPacifist, Transform _failSafeTrans)
     {
         curShipTemplate = _shipTemplate;
         GameObject go = GameObject.Instantiate(shipTemplates[curShipTemplate], gameObject.transform);
@@ -104,6 +107,7 @@ public class AIPlayerController : MonoBehaviour
         playAtackCont.SetUpAttackController(forwardCanonPiv, leftCanonsPiv, rightCanonsPiv, data.GetAmmo, false);
         healthCont = GetComponent<HealthController>();
         healthCont.SetUpHealthController(data.GetHp, true, curPlayerID, info.GetHealthBarRect);
+        failSafeTransform = _failSafeTrans;
 
     }
     private void Start()
@@ -191,6 +195,18 @@ public class AIPlayerController : MonoBehaviour
             failSafePathTimer = 0;
         }
     }
+    IEnumerator GetFailSafePath(Vector3 _despos)
+    {
+        nodes.Clear();
+        curNode = 0;
+        yield return new WaitForSeconds(0.5f);
+        nodes.Add(_despos);
+        GameObject go = Instantiate(NodeChecker, _despos, Quaternion.identity, AI_PathTrans);
+        go.name = string.Format("{0}_{1}", curPlayerID, 0.ToString());
+        canMoveForward = true;
+        failSafePathTimer = 0;
+
+    }
     private void FixedUpdate()
     {
         if (nodes.Count > 0 && !isImmobilized)
@@ -235,7 +251,9 @@ public class AIPlayerController : MonoBehaviour
             {
                 failSafePathTimer = 0;
                 //create failsafe path
-                StartCoroutine(GetPath(Vector3.zero));
+                Debug.LogWarning(string.Format("We can't move forward, refering to failsafe trans at {0} ; {1} ; {2}",
+                    failSafeTransform.position.x, failSafeTransform.position.y, failSafeTransform.position.z));
+                StartCoroutine(GetFailSafePath(failSafeTransform.position));
             }
 
         }

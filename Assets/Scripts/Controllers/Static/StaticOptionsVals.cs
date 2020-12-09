@@ -1,4 +1,6 @@
-﻿public static class StaticOptionsVals
+﻿using UnityEngine;
+
+public static class StaticOptionsVals
 {
     public static string GetBGMMusic{ get { return "discovery-bgm"; } }
     public static string GetShootSFX{ get { return "shoot"; } }
@@ -22,4 +24,5 @@
             }
         } 
     }
+    public static string GetOptionsPath { get => Application.persistentDataPath + "/options.xml"; }
 }
